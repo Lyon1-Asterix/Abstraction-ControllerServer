@@ -20,31 +20,43 @@ using namespace Leap;
 // }
 
 int socketServeur, client[NB_CLIENT];
-bool connected = false;
+bool connected = false, resource_ready;
 
 class LeapListener : public Listener {
+private:
+    Vector handCenter;
 public:
     virtual void onConnect(const Controller&);
     virtual void onFrame(const Controller&);
+    std::string getHandCenter () { return handCenter.toString(); }
 };
 
 void LeapListener::onConnect (const Controller& controller) {
+    resource_ready = false;
     //std::cout << "Connected" << std::endl;
 }
 
 void LeapListener::onFrame (const Controller& controller) {
-    //std::cout << "Frame available" << std::endl;
     const Frame frame = controller.frame();
-    //Hand firstHand = frame.hands[0];
     FingerList fingers = frame.fingers().extended();
-    //std::string dummy = "%d";
-    if (connected)
-        for (int i = 0; i < NB_CLIENT; i++)
-            assert ( EnvoieMessage(client[i], // (char*)dummy.c_str()
-                                   (char*)"%d",
-                                   fingers.count()) != -1 );
-    //std::cout << fingers.count() << std::endl;
+    Hand hand = frame.hands()[0];
+
+    // Si la main est valide + 5 doigts
+    if (hand.isValid() && fingers.count() == 5 && connected) {
+        resource_ready = true;
+        handCenter = hand.palmPosition();
+        assert (EnvoieMessage(client[0],
+                              (char*)"%s\n",
+                              handCenter.toString().c_str()) != -1);
+    }
 }
+
+void handler (int sig) {
+    std::cout << "Bye bye !" << std::endl;
+    close(socketServeur);
+    exit (0);
+}
+
 
 int main(int argc, char *argv[]) {
 
@@ -54,10 +66,7 @@ int main(int argc, char *argv[]) {
 
     controller.addListener (listener);
 
-    // std::cout << "Press Enter to quit ..." << std::endl;
-    // std::cin.get ();
-
-    /* int d[2], s, i = 0; */
+    signal(SIGINT, handler);
 
     if(argc != 2) {
         fprintf(stderr, "usage : %s <port>\n", argv[0]);
@@ -75,12 +84,18 @@ int main(int argc, char *argv[]) {
             i++;
         }
 
-        connected = true;
-        //std::cout << "Tout le monde est connecté" << std::endl;
+        if (!connected)
+            connected = true;
+
+        if (resource_ready)
+            continue;
+        else
+            sleep(500);
+
     }
 
-    controller.removeListener (listener);
-    close(socketServeur);
+    // N'ai jamais appelé
+    //controller.removeListener (listener);
 
     return 0;
 }
