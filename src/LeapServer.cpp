@@ -1,7 +1,25 @@
 #include "LeapServer.hpp"
 
+LeapServer::LeapServer() : server(NULL) {
+    controller.addListener(*this);
+}
+
+LeapServer::LeapServer(const char* nb_client, const char* port) {
+    server = new Server(nb_client, port);
+}
+
+LeapServer::~LeapServer() {
+    delete server;
+    controller.removeListener(*this);
+}
+
+void LeapServer::run() {
+    if(server != NULL)
+        server->run();
+}
+
 void LeapServer::onConnect (const Controller& controller) {
-    // resource_ready = false;
+    server->resource_ready = false;
 }
 
 void LeapServer::onFrame (const Controller& controller) {
@@ -10,10 +28,11 @@ void LeapServer::onFrame (const Controller& controller) {
     Hand hand = frame.hands()[0];
 
     // Si la main est valide + 5 doigts
-    if (hand.isValid() && fingers.count() == 5) {
+    if (hand.isValid() && fingers.count() == 5 && server->isConnected()) {
         handCenter = hand.palmPosition();
-        // assert (EnvoieMessage(client[0],
-        //                       (char*)"%s\n",
-        //                       handCenter.toString().c_str()) != -1);
+        assert (EnvoieMessage(server->getClient()[0],
+                              (char*)"%s\n",
+                              handCenter.toString().c_str()) != -1);
     }
+    server->resource_ready = true;
 }

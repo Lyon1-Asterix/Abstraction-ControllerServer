@@ -12,14 +12,10 @@ private:
     Vector handCenter;
     Controller controller;
 public:
-    LeapServer() : server(NULL) {
-        controller.addListener(*this);
-    }
-    LeapServer(const char* nb_client, const char* port) {
-        server = new Server(nb_client, port);
-    }
-    ~LeapServer() { delete server; controller.removeListener(*this); }
-    void run() { if(server != NULL) server->run(); }
+    LeapServer();
+    LeapServer(const char* nb_client, const char* port);
+    ~LeapServer();
+    void run();
     virtual void onConnect(const Controller&);
     virtual void onFrame(const Controller&);
     std::string getHandCenter () { return handCenter.toString(); }

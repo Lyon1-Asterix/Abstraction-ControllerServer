@@ -20,12 +20,15 @@ private:
     const char* port;
     unsigned int nb_client;
     bool connected;
-    bool resource_ready;
 public:
     Server();
     Server(const char* nb_client, const char* port);
     ~Server();
     void run();
+    int* getClient() { return client; }
+    bool isConnected() { return connected; }
+    bool resource_ready;
+
 };
 
 #endif // SERVER_HPP
