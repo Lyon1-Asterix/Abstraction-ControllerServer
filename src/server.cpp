@@ -19,7 +19,8 @@ using namespace Leap;
 //     typedef void (*sighandler_t)();
 // }
 
-int socketServeur;
+int socketServeur, client[NB_CLIENT];
+bool connected = false;
 
 class LeapListener : public Listener {
 public:
@@ -37,9 +38,11 @@ void LeapListener::onFrame (const Controller& controller) {
     //Hand firstHand = frame.hands[0];
     FingerList fingers = frame.fingers().extended();
     //std::string dummy = "%d";
-    EnvoieMessage(socketServeur, // (char*)dummy.c_str()
-                  (char*)"%d",
-                  fingers.count());
+    if (connected)
+        for (int i = 0; i < NB_CLIENT; i++)
+            assert ( EnvoieMessage(client[i], // (char*)dummy.c_str()
+                                   (char*)"%d",
+                                   fingers.count()) != -1 );
     //std::cout << fingers.count() << std::endl;
 }
 
@@ -47,14 +50,12 @@ int main(int argc, char *argv[]) {
 
     Controller controller;
     LeapListener listener;
-    int client[NB_CLIENT], i = 0;
+    int i = 0;
 
     controller.addListener (listener);
 
     // std::cout << "Press Enter to quit ..." << std::endl;
     // std::cin.get ();
-
-    controller.removeListener (listener);
 
     /* int d[2], s, i = 0; */
 
@@ -66,19 +67,19 @@ int main(int argc, char *argv[]) {
     socketServeur = CreeSocketServeur(argv[1]);
     assert(socketServeur != -1);
 
-//    while(1) {
-    while(i != NB_CLIENT) {
-        client[i] = AcceptConnexion(socketServeur);
-        assert(client[i] != -1);
-        assert(EnvoieMessage(client[i], (char*)"%s", "Hello") != -1);
-        i++;
+    while(1) {
+        while(i != NB_CLIENT) {
+            client[i] = AcceptConnexion(socketServeur);
+            assert(client[i] != -1);
+            assert(EnvoieMessage(client[i], (char*)"%s", "Hello") != -1);
+            i++;
+        }
+
+        connected = true;
+        //std::cout << "Tout le monde est connecté" << std::endl;
     }
 
-    std::cout << "Tout le monde est connecté" << std::endl;
-
-
-        //  }
-
+    controller.removeListener (listener);
     close(socketServeur);
 
     return 0;
