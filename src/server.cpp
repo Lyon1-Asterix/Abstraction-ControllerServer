@@ -15,12 +15,14 @@ extern "C" {
 
 using namespace Leap;
 
-// extern "C" {
-//     typedef void (*sighandler_t)();
-// }
-
 int socketServeur, client[NB_CLIENT];
 bool connected = false, resource_ready;
+
+/**
+ * TODO
+ * * Enlevé les variables globales dégeulasses
+ */
+
 
 class LeapListener : public Listener {
 private:
@@ -33,7 +35,6 @@ public:
 
 void LeapListener::onConnect (const Controller& controller) {
     resource_ready = false;
-    //std::cout << "Connected" << std::endl;
 }
 
 void LeapListener::onFrame (const Controller& controller) {
@@ -51,6 +52,9 @@ void LeapListener::onFrame (const Controller& controller) {
     }
 }
 
+/**
+ * Permet de quitter le programme proprement.
+ */
 void handler (int sig) {
     std::cout << "Bye bye !" << std::endl;
     close(socketServeur);
@@ -66,6 +70,7 @@ int main(int argc, char *argv[]) {
 
     controller.addListener (listener);
 
+    // Plug le Ctrl-C
     signal(SIGINT, handler);
 
     if(argc != 2) {
@@ -73,10 +78,12 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
+    // On créer la socket d'écoute
     socketServeur = CreeSocketServeur(argv[1]);
     assert(socketServeur != -1);
 
     while(1) {
+        // On attend les clients + petit message de bienvenue
         while(i != NB_CLIENT) {
             client[i] = AcceptConnexion(socketServeur);
             assert(client[i] != -1);
@@ -87,6 +94,7 @@ int main(int argc, char *argv[]) {
         if (!connected)
             connected = true;
 
+        // Permet de ne pas bousiller le cpu
         if (resource_ready)
             continue;
         else
