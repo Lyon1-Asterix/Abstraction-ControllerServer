@@ -28,6 +28,7 @@ Server::~Server() {
 }
 
 void handler (int sig) {
+    // TODO call server destructor
     exit (0);
 }
 

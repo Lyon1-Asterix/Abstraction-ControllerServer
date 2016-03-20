@@ -4,7 +4,7 @@ LeapServer::LeapServer() : server(NULL) {
     controller.addListener(*this);
 }
 
-LeapServer::LeapServer(const char* nb_client, const char* port) {
+LeapServer::LeapServer(const char* nb_client, const char* port) : LeapServer() {
     server = new Server(nb_client, port);
 }
 
