@@ -1,4 +1,7 @@
 #include "LeapServer.hpp"
+#include <vector>
+
+LeapServer* pointer;
 
 LeapServer::LeapServer() : server(NULL) {
     controller.addListener(*this);
@@ -6,6 +9,7 @@ LeapServer::LeapServer() : server(NULL) {
 
 LeapServer::LeapServer(const char* nb_client, const char* port) : LeapServer() {
     server = new Server(nb_client, port);
+    pointer = this;
 }
 
 LeapServer::~LeapServer() {
@@ -13,7 +17,18 @@ LeapServer::~LeapServer() {
     controller.removeListener(*this);
 }
 
+void handler (int sig) {
+    // TODO call server destructor
+    fprintf (stdout, "Bye bye !\n");
+
+    delete pointer;
+
+    exit (0);
+}
+
 void LeapServer::run() {
+    // Plug le Ctrl-C
+    signal(SIGINT, handler);
     if(server != NULL)
         server->run();
 }

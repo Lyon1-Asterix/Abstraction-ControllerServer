@@ -27,15 +27,7 @@ Server::~Server() {
     close (socketServeur);
 }
 
-void handler (int sig) {
-    // TODO call server destructor
-    exit (0);
-}
-
 void Server::run() {
-    // Plug le Ctrl-C
-    signal(SIGINT, handler);
-
     unsigned int i = 0;
     while(1) {
         // On attend les clients + petit message de bienvenue
