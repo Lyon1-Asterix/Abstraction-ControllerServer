@@ -26,7 +26,7 @@
  * @param port : le port utilisÃ©
  * @return la socket d'attente ou -1 en cas d'erreur
  *
- * en cas d'erreur, un message explicatif est affiché sur la sortie d'erreur 
+ * en cas d'erreur, un message explicatif est affiché sur la sortie d'erreur
  * standart
  */
 int CreeSocketServeur(const char* port);

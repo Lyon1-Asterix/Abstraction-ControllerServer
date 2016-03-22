@@ -20,5 +20,37 @@
 
 # Usage<a id="orgheadline3"></a>
 
--   Connect your Leap Motion and run `sudo leapd`
--   `./bin/LeapServer <nb_client> <port>`
+-   Server side
+    -   Connect your Leap Motion and run `sudo leapd`
+    -   `./bin/LeapServer <nb_client> <port>`
+-   Client side
+    -   `C/C++`
+        
+            #include "socklib" // disponible dans /include
+            
+            int main() {
+                 int socketClient = CreeSocketClient ("127.0.0.1", "2222");
+            
+                 if (socketClient == -1) {
+                      fprintf(stderr,"erreur de connexion sur la socket");
+                      exit (1)
+                 }
+            
+                 //bla bla
+            
+                 return 0;
+            }
+    -   `JAVA`
+        
+            import java.net.*;
+            import java.io.*;
+            
+            public class Client {
+                public static void main(String[] args) {
+                    try {
+                        Socket socket = new Socket ("127.0.0.1", 2222);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }

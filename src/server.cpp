@@ -1,5 +1,7 @@
 #include "server.hpp"
 
+Server* pointerServer;
+
 Server::Server() : socketServeur(-1),
                    client(NULL),
                    port(NULL),
@@ -20,6 +22,7 @@ Server::Server(const char* nb_client_, const char* port_)
     // On créer la socket d'écoute
     socketServeur = CreeSocketServeur(port_);
     assert (socketServeur != -1);
+    pointerServer = this;
 }
 
 Server::~Server() {
@@ -27,7 +30,18 @@ Server::~Server() {
     close (socketServeur);
 }
 
+
+void handler_ (int sig) {
+    // TODO call server destructor
+    fprintf (stdout, "Bye bye !\n");
+
+    delete pointerServer;
+
+    exit (0);
+}
+
 void Server::run() {
+    signal(SIGINT, handler_);
     unsigned int i = 0;
     while(1) {
         // On attend les clients + petit message de bienvenue
