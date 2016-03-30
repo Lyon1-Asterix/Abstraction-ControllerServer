@@ -10,6 +10,7 @@ LeapServer::LeapServer() : server(NULL) {
 LeapServer::LeapServer(const char* nb_client, const char* port) : LeapServer() {
     server = new Server(nb_client, port);
     pointer = this;
+    direction = UNDEFINED;
 }
 
 LeapServer::~LeapServer() {
@@ -18,11 +19,8 @@ LeapServer::~LeapServer() {
 }
 
 void handler (int sig) {
-    // TODO call server destructor
     fprintf (stdout, "Bye bye !\n");
-
     delete pointer;
-
     exit (0);
 }
 
@@ -37,17 +35,46 @@ void LeapServer::onConnect (const Controller& controller) {
     server->resource_ready = false;
 }
 
+Direction LeapServer::findDirection (const Vector& vector) {
+     if (vector.x > 90) { // Droite
+          return RIGHT;
+     } else if (vector.x < -90) { // Gauche
+          return LEFT;
+     } else if (vector.z < -90) { // Haut
+          return FORWARD;
+     } else if (vector.z > 90) { // Bas
+          return BACKWARD;
+     } else {
+          return UNDEFINED;
+     }
+}
+
+void LeapServer::sendData (const Direction& direction) {
+     std::string directionToString [] = {
+          "FORWARD",
+          "BACKWARD",
+          "RIGHT",
+          "LEFT",
+          "UNDEFINED"
+     };
+     assert (EnvoieMessage(server->getClient()[0],
+                           (char*)"%s\n",
+                           directionToString[(int)direction]) != -1);
+}
+
 void LeapServer::onFrame (const Controller& controller) {
     const Frame frame = controller.frame();
     FingerList fingers = frame.fingers().extended();
     Hand hand = frame.hands()[0];
-
+    // MAJ de la direction
+    direction = findDirection (hand.palmPosition());
     // Si la main est valide + 5 doigts
     if (hand.isValid() && fingers.count() == 5 && server->isConnected()) {
-        handCenter = hand.palmPosition();
-        assert (EnvoieMessage(server->getClient()[0],
-                              (char*)"%s\n",
-                              handCenter.toString().c_str()) != -1);
+         //handCenter = hand.palmPosition();
+         Direction tempDirection = findDirection (hand.palmPosition());
+         if (tempDirection != direction) {
+              sendData (tempDirection);
+         }
     }
     server->resource_ready = true;
 }
