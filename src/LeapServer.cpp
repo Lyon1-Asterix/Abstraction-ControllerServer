@@ -57,9 +57,10 @@ void LeapServer::sendData (const Direction& direction) {
           "LEFT",
           "UNDEFINED"
      };
+
      assert (EnvoieMessage(server->getClient()[0],
                            (char*)"%s\n",
-                           directionToString[(int)direction]) != -1);
+                           directionToString[(int)direction].c_str()) != -1);
 }
 
 void LeapServer::onFrame (const Controller& controller) {
@@ -67,13 +68,14 @@ void LeapServer::onFrame (const Controller& controller) {
     FingerList fingers = frame.fingers().extended();
     Hand hand = frame.hands()[0];
     // MAJ de la direction
-    direction = findDirection (hand.palmPosition());
+    //direction = findDirection (hand.palmPosition());
     // Si la main est valide + 5 doigts
     if (hand.isValid() && fingers.count() == 5 && server->isConnected()) {
          //handCenter = hand.palmPosition();
          Direction tempDirection = findDirection (hand.palmPosition());
          if (tempDirection != direction) {
               sendData (tempDirection);
+              direction = tempDirection;
          }
     }
     server->resource_ready = true;
