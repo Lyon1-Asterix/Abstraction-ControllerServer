@@ -23,12 +23,18 @@ OBJS 	:= $(addprefix $(OBJD)/, $(notdir $(OBJ)))
 default: $(BIND)/$(EXEC)
 
 $(BIND)/$(EXEC): $(OBJS)
+	mkdir -p $(BIND)
 	@$(ECHO) "Linking ..\n"
 	$(LD) -o $@ $^ $(LDFLAGS) $(LIBD) $(LIBS) -Wl,-rpath ./
 
 $(OBJD)/%.o: $(SRCD)/%.cpp
 	@$(ECHO) "Compiling source file ..\n"
 	$(CC) -o $@ -c $< $(CPPFLAGS) -I$(INCD)
+
+$(OBJS): | $(OBJD)
+
+$(OBJD):
+	mkdir -p $(OBJD)
 
 clean:
 	@$(FIND) $(OBJD) -name *.o -delete
