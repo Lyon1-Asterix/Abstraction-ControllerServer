@@ -20,7 +20,7 @@ SRCS	=  $(wildcard $(SRCD)/*.cpp)
 OBJ	=  $(SRCS:.cpp=.o)
 OBJS 	:= $(addprefix $(OBJD)/, $(notdir $(OBJ)))
 
-default:  $(OBJD)  $(BIND) $(BIND)/$(EXEC)
+default: $(BIND) $(OBJD) $(BIND)/$(EXEC)
 
 $(BIND)/$(EXEC): $(OBJS)
 	@$(ECHO) "Linking ..\n"
@@ -40,3 +40,4 @@ clean:
 
 mrproper: clean
 	@$(RM) -f $(BIND)/$(EXEC)
+	@$(RM) -rf $(OBJD) $(BIND)
