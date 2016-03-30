@@ -3,13 +3,9 @@
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#orgheadline1">1. Abstract Leap Motion Server</a></li>
-<li><a href="#orgheadline3">2. Prerequisites</a>
-<ul>
-<li><a href="#orgheadline2">2.1. Download and install the LeapMotion SDK</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline4">3. Installation</a></li>
-<li><a href="#orgheadline5">4. Usage</a></li>
+<li><a href="#orgheadline2">2. Prerequisites</a></li>
+<li><a href="#orgheadline3">3. Installation</a></li>
+<li><a href="#orgheadline4">4. Usage</a></li>
 </ul>
 </div>
 </div>
@@ -17,17 +13,17 @@
 
 # Abstract Leap Motion Server<a id="orgheadline1"></a>
 
-# Prerequisites<a id="orgheadline3"></a>
+# Prerequisites<a id="orgheadline2"></a>
 
-## Download and install the [LeapMotion SDK](https://developer.leapmotion.com/get-started)<a id="orgheadline2"></a>
+-   Download and install the [LeapMotion SDK](https://developer.leapmotion.com/get-started)
 
-# Installation<a id="orgheadline4"></a>
+# Installation<a id="orgheadline3"></a>
 
 -   Clone the project
 -   `cd Abstraction-LeapMotionServer`
 -   `make`
 
-# Usage<a id="orgheadline5"></a>
+# Usage<a id="orgheadline4"></a>
 
 -   Server side
     -   Connect your Leap Motion and run `sudo leapd`
