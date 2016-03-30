@@ -37,9 +37,9 @@ void LeapServer::onConnect (const Controller& controller) {
 
 Direction LeapServer::findDirection (const Vector& vector) {
      if (vector.x > 90) { // Droite
-          return RIGHT;
-     } else if (vector.x < -90) { // Gauche
           return LEFT;
+     } else if (vector.x < -90) { // Gauche
+          return RIGHT;
      } else if (vector.z < -90) { // Haut
           return FORWARD;
      } else if (vector.z > 90) { // Bas
@@ -70,13 +70,16 @@ void LeapServer::onFrame (const Controller& controller) {
     // MAJ de la direction
     //direction = findDirection (hand.palmPosition());
     // Si la main est valide + 5 doigts
-    if (hand.isValid() && fingers.count() == 5 && server->isConnected()) {
-         //handCenter = hand.palmPosition();
-         Direction tempDirection = findDirection (hand.palmPosition());
-         if (tempDirection != direction) {
-              sendData (tempDirection);
-              direction = tempDirection;
+    if (server->isConnected ()) {
+         if (hand.isValid() && fingers.count() == 5) {
+              //handCenter = hand.palmPosition();
+              Direction tempDirection = findDirection (hand.palmPosition());
+              if (tempDirection != direction) {
+                   sendData (tempDirection);
+                   direction = tempDirection;
+              }
          }
     }
+
     server->resource_ready = true;
 }
