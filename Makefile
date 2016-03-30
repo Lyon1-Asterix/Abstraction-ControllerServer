@@ -20,13 +20,13 @@ SRCS	=  $(wildcard $(SRCD)/*.cpp)
 OBJ	=  $(SRCS:.cpp=.o)
 OBJS 	:= $(addprefix $(OBJD)/, $(notdir $(OBJ)))
 
-default: $(BIND) $(BIND)/$(EXEC)
+default: $(BIND) $(OBJD) $(BIND)/$(EXEC)
 
 $(BIND)/$(EXEC): $(OBJS)
 	@$(ECHO) "Linking ..\n"
 	$(LD) -o $@ $^ $(LDFLAGS) $(LIBD) $(LIBS) -Wl,-rpath ./
 
-$(OBJD)/%.o: $(OBJD) $(SRCD)/%.cpp
+$(OBJD)/%.o: $(SRCD)/%.cpp
 	@$(ECHO) "Compiling source file ..\n"
 	$(CC) -o $@ -c $< $(CPPFLAGS) -I$(INCD)
 
@@ -40,3 +40,4 @@ clean:
 
 mrproper: clean
 	@$(RM) -f $(BIND)/$(EXEC)
+	@$(RM) -rf $(OBJD) $(BIND)
