@@ -14,16 +14,14 @@ enum Direction {
 
 using namespace Leap;
 
-class LeapServer : public Listener {
+class LeapServer : public Listener, public Server {
 private:
-     Server* server;
      Direction direction;
      Controller controller;
 public:
      LeapServer();
      LeapServer(const char* nb_client, const char* port);
      ~LeapServer();
-     void run();
      virtual void onConnect(const Controller&);
      virtual void onFrame(const Controller&);
      // Retourne la direction du vecteur de la main

@@ -28,7 +28,6 @@ public:
     int* getClient() { return client; }
     bool isConnected() { return connected; }
     bool resource_ready;
-
 };
 
 #endif // SERVER_HPP

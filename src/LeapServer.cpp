@@ -1,20 +1,17 @@
 #include "LeapServer.hpp"
-#include <vector>
 
 LeapServer* pointer;
 
-LeapServer::LeapServer() : server(NULL) {
+LeapServer::LeapServer() {
     controller.addListener(*this);
 }
 
 LeapServer::LeapServer(const char* nb_client, const char* port) : LeapServer() {
-    server = new Server(nb_client, port);
     pointer = this;
     direction = UNDEFINED;
 }
 
 LeapServer::~LeapServer() {
-    delete server;
     controller.removeListener(*this);
 }
 
@@ -24,15 +21,9 @@ void handler (int sig) {
     exit (0);
 }
 
-void LeapServer::run() {
-    // Plug le Ctrl-C
-    signal(SIGINT, handler);
-    if(server != NULL)
-        server->run();
-}
 
 void LeapServer::onConnect (const Controller& controller) {
-    server->resource_ready = false;
+    this->resource_ready = false;
 }
 
 Direction LeapServer::findDirection (const Vector& vector) {
@@ -58,7 +49,7 @@ void LeapServer::sendData (const Direction& direction) {
           "UNDEFINED"
      };
 
-     assert (EnvoieMessage(server->getClient()[0],
+     assert (EnvoieMessage(this->getClient()[0],
                            (char*)"%s\n",
                            directionToString[(int)direction].c_str()) != -1);
 }
@@ -67,19 +58,18 @@ void LeapServer::onFrame (const Controller& controller) {
     const Frame frame = controller.frame();
     FingerList fingers = frame.fingers().extended();
     Hand hand = frame.hands()[0];
-    // MAJ de la direction
-    //direction = findDirection (hand.palmPosition());
-    // Si la main est valide + 5 doigts
-    if (server->isConnected ()) {
+    // Si le(s) client(s) est (sont) connecté(s)
+    if (this->isConnected ()) {
+        // Si la main est valide + 5 doigts
          if (hand.isValid() && fingers.count() == 5) {
-              //handCenter = hand.palmPosition();
               Direction tempDirection = findDirection (hand.palmPosition());
               if (tempDirection != direction) {
                    sendData (tempDirection);
+                   // MAJ de la direction
                    direction = tempDirection;
               }
          }
     }
 
-    server->resource_ready = true;
+    this->resource_ready = true;
 }

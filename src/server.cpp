@@ -32,11 +32,7 @@ Server::~Server() {
 
 
 void handler_ (int sig) {
-    // TODO call server destructor
-    fprintf (stdout, "Bye bye !\n");
-
     delete pointerServer;
-
     exit (0);
 }
 
