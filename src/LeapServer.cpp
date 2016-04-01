@@ -11,6 +11,8 @@ LeapServer::~LeapServer() {
 }
 
 void LeapServer::onConnect (const Controller& controller) {
+    fprintf (stdout, "Le Leap Motion est connecté : %d\n",
+             controller.isConnected());
     this->resource_ready = true;
 }
 

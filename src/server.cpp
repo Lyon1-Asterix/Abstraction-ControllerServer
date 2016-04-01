@@ -8,12 +8,11 @@ Server::Server(const char* nb_client_, const char* port_)
     nb_client = atoi(nb_client_);
     port = port_;
 
-	// On créer les sockets clients
+    // On créer les sockets clients
     client = new int [nb_client];
 
     // On créer la socke d'écoute (le serveur quoi ...)
     socketServeur = CreeSocketServeur(port_);
-	
     assert (socketServeur != -1);
 }
 
@@ -21,15 +20,15 @@ Server::Server() : socketServeur(-1),
                    client(NULL),
                    port(NULL),
                    nb_client(0),
-				   nb_client_connected(0),
+                   nb_client_connected(0),
                    connected(false),
                    resource_ready(false) {}
 
 Server::~Server() {
-	// Fermeture des sockets clients
-	for (unsigned i = 0; i < nb_client_connected; i++) {
-		close (client[i]);
-	}
+    // Fermeture des sockets clients
+    for (unsigned i = 0; i < nb_client_connected; i++) {
+        close (client[i]);
+    }
     delete[] client;
     close (socketServeur);
 }
@@ -37,14 +36,15 @@ Server::~Server() {
 void Server::run() {
     while(1) {
         while(nb_client_connected != nb_client) {
-			// On attend les clients + petit message de bienvenue
-			fprintf (stdout, "Attente des clients %d/%d\n",
-					 nb_client_connected,
-					 nb_client);
+            // On attend les clients + petit message de bienvenue
+            fprintf (stdout, "Attente des clients %d/%d\n",
+                     nb_client_connected,
+                     nb_client);
             client[nb_client_connected] = AcceptConnexion(socketServeur);
             assert ( client[nb_client_connected] != -1 );
-            assert ( EnvoieMessage(client[nb_client_connected], (char*)"%s\n", "Hello !") != -1);
-			nb_client_connected++;
+            assert ( EnvoieMessage(client[nb_client_connected],
+                                   (char*)"%s\n", "Hello !") != -1);
+            nb_client_connected++;
         }
 
         if (!connected)
