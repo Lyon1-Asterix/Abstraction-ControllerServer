@@ -19,7 +19,8 @@ private:
     int* client;
     const char* port;
     unsigned int nb_client;
-    bool connected;
+	unsigned int nb_client_connected;
+    bool connected; // Renvoie vrai si tout les clients sont connectés
 public:
     Server();
     Server(const char* nb_client, const char* port);

@@ -3,7 +3,7 @@ CAT 		=	cat
 RM              =	rm
 FIND 		=	find
 UNAME		=       $(shell uname)
-CPPFLAGS	=	-std=c++11 -ggdb -Wall
+CPPFLAGS	=	-std=c++11 -ggdb -Wall -W -Wextra
 LDFLAGS		=
 CC   		= 	g++
 LD   		= 	g++

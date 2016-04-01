@@ -1,13 +1,8 @@
 #include "LeapServer.hpp"
 
-LeapServer* pointer;
-
-LeapServer::LeapServer() {
-    controller.addListener(*this);
-}
-
-LeapServer::LeapServer(const char* nb_client, const char* port) : LeapServer() {
-    pointer = this;
+LeapServer::LeapServer(const char* nb_client, const char* port) :
+	Server (nb_client, port) {
+	controller.addListener(*this);
     direction = UNDEFINED;
 }
 
@@ -15,15 +10,8 @@ LeapServer::~LeapServer() {
     controller.removeListener(*this);
 }
 
-void handler (int sig) {
-    fprintf (stdout, "Bye bye !\n");
-    delete pointer;
-    exit (0);
-}
-
-
 void LeapServer::onConnect (const Controller& controller) {
-    this->resource_ready = false;
+    this->resource_ready = true;
 }
 
 Direction LeapServer::findDirection (const Vector& vector) {
@@ -58,7 +46,7 @@ void LeapServer::onFrame (const Controller& controller) {
     const Frame frame = controller.frame();
     FingerList fingers = frame.fingers().extended();
     Hand hand = frame.hands()[0];
-    // Si le(s) client(s) est (sont) connecté(s)
+    // Si les clients sont connectés
     if (this->isConnected ()) {
         // Si la main est valide + 5 doigts
          if (hand.isValid() && fingers.count() == 5) {
@@ -70,6 +58,4 @@ void LeapServer::onFrame (const Controller& controller) {
               }
          }
     }
-
-    this->resource_ready = true;
 }
