@@ -10,8 +10,11 @@
 </div>
 </div>
 
+# Abstraction Controller Server<a id="orgheadline1"></a>
+This project aims to provide a generic abstraction of any existing controller. The client-side code should keep a minimum size, as it only sees a generic joystick : the server, on which all the drivers are installed, retrieves and translates all the data from the controller into buttons and axes.
 
-# Abstract Leap Motion Server<a id="orgheadline1"></a>
+Currently, the only implemented controller is the Leap Motion.
+We are working right now on at least <a href="http://compass.microsoft.com/assets/f2/28/f228e338-5ecb-4dae-8cf6-f3f2a6c98de6.jpg?n=pop1.jpg">three</a> <a href="https://content.ebgames.com.au/website/images/detail/153839_detail.jpg">other</a> <a href="http://cdn.ubergizmo.com/photos/2010/6/dj-hero-2-coming.jpg">controllers</a>.
 
 # Prerequisites<a id="orgheadline2"></a>
 
@@ -20,7 +23,7 @@
 # Installation<a id="orgheadline3"></a>
 
 -   Clone the project
--   `cd Abstraction-LeapMotionServer`
+-   `cd Abstraction-ControllerServer`
 -   `make`
 
 # Usage<a id="orgheadline4"></a>
