@@ -3,7 +3,7 @@ ARCH := $(shell uname -m)
 
 ifeq ($(OS), Linux)
   ifeq ($(ARCH), x86_64)
-    LEAP_LIBRARY := ./LeapSDK/lib/x64/libLeap.so -Wl,-rpath,./LeapSDL/lib/x64
+    LEAP_LIBRARY := ./LeapSDK/lib/x64/libLeap.so -Wl,-rpath,./LeapSDK/lib/x64
   else
     LEAP_LIBRARY := ./LeapSDK/lib/x86/libLeap.so -Wl,-rpath,./LeapSDK/lib/x86
   endif
@@ -22,7 +22,7 @@ CC   		= g++
 LD   		= g++
 
 SRCD = src
-INCD = include
+INCD = -Iinclude -I./LeapSDK/include
 OBJD = obj
 BIND = bin
 LIBD =
@@ -45,7 +45,7 @@ endif
 
 $(OBJD)/%.o: $(SRCD)/%.cpp
 	@$(ECHO) "Compiling source file ..\n"
-	$(CC) -o $@ -c $< $(CPPFLAGS) -I$(INCD)
+	$(CC) -o $@ -c $< $(CPPFLAGS) $(INCD)
 
 $(OBJD):
 	@mkdir -p $(OBJD)

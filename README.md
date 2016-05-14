@@ -34,7 +34,7 @@ We are working right now on at least <a href="http://compass.microsoft.com/asset
 -   Client side
     -   `C/C++`
         
-            #include "socklib" // disponible dans /include
+            #include "socklib.h" // disponible dans /include
             
             int main() {
                  int socketClient = CreeSocketClient ("127.0.0.1", "2222");
