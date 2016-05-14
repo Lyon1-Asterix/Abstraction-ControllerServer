@@ -18,7 +18,7 @@ We are working right now on at least <a href="http://compass.microsoft.com/asset
 
 # Prerequisites<a id="orgheadline2"></a>
 
--   Download and install the [LeapMotion SDK](https://developer.leapmotion.com/get-started)
+-   Download and install the [LeapMotion Setup](https://www.leapmotion.com/setup/)
 
 # Installation<a id="orgheadline3"></a>
 
@@ -29,7 +29,9 @@ We are working right now on at least <a href="http://compass.microsoft.com/asset
 # Usage<a id="orgheadline4"></a>
 
 -   Server side
-    -   Connect your Leap Motion and run `sudo leapd`
+    -   Connect your Leap Motion 
+        - Linux : run `sudo leapd`
+        - Mac OS : just run Leap Motion
     -   `./bin/LeapServer <nb_client> <port>`
 -   Client side
     -   `C/C++`
