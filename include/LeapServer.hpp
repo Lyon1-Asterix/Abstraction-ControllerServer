@@ -1,7 +1,7 @@
 #ifndef LEAP_SERVER_HPP
 #define LEAP_SERVER_HPP
 
-#include "Leap.h"
+#include "../LeapSDK/include/Leap.h"
 #include "server.hpp"
 
 enum Direction {
