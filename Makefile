@@ -4,10 +4,12 @@ ARCH := $(shell uname -m)
 ifeq ($(OS), Linux)
   ifeq ($(ARCH), x86_64)
     LEAP_LIBRARY := ./LeapSDK/lib/x64/libLeap.so -Wl,-rpath,./LeapSDK/lib/x64
+  else ifeq ($(ARCH), armv7l)
+    LEAP_LIBRARY :=
   else
     LEAP_LIBRARY := ./LeapSDK/lib/x86/libLeap.so -Wl,-rpath,./LeapSDK/lib/x86
   endif
-else
+else ifeq ($(OS), Darwin)
   # OS X
   LEAP_LIBRARY := ./LeapSDK/lib/libLeap.dylib
 endif
@@ -28,7 +30,7 @@ BIND = bin
 LIBD =
 LIBS =
 
-EXEC 	=  LeapServer
+EXEC 	=  XboxServer
 SRCS	=  $(wildcard $(SRCD)/*.cpp)
 OBJ		=  $(SRCS:.cpp=.o)
 OBJS 	:= $(addprefix $(OBJD)/, $(notdir $(OBJ)))
