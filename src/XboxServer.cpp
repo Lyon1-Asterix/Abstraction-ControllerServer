@@ -16,6 +16,11 @@ void XboxServer::run() {
 
     // wait data from xboxdrv
     char *data = RecoieLigne(xboxdrv_socket);
-    fprintf(stdout, "%s\n", data);
+    if (data != NULL)
+      fprintf(stdout, "%s\n", data);
+    else {
+      fprintf(stdout, "xboxdrv is disconnected\n");
+      exit(0);
+    }      
   }
 }

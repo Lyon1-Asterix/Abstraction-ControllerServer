@@ -31,7 +31,7 @@ LIBD =
 LIBS =
 
 EXEC 	=  XboxServer
-SRCS	=  $(wildcard $(SRCD)/*.cpp)
+SRCS	=  main.cpp  server.cpp  socklib.cpp  XboxServer.cpp #$(wildcard $(SRCD)/*.cpp)
 OBJ		=  $(SRCS:.cpp=.o)
 OBJS 	:= $(addprefix $(OBJD)/, $(notdir $(OBJ)))
 
