@@ -1,7 +1,7 @@
 #ifndef XBOX_HPP
 #define XBOX_HPP
 
-#include "Server.hpp"
+#include "server.hpp"
 
 /**! \class XboxServer
  * \brief this class make the bridge between the xboxdrv and the client.
