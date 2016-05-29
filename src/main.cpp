@@ -1,8 +1,10 @@
 #include <stdlib.h>
 
 #include "LeapServer.hpp"
+#include "XboxServer.hpp"
 
 LeapServer *server;
+XboxServer *xbox;
 
 void handler(int sig) {
   fprintf(stdout, "%d signal detected\n", sig);
@@ -16,8 +18,9 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
   signal(SIGINT, handler);
-  server = new LeapServer(argv[1], argv[2]);
-  server->run();
-
+  //server = new LeapServer(argv[1], argv[2]);
+  //server->run();
+  xbox = new XboxServer(argv[1], argv[2]);
+  xbox->run();
   return 0;
 }
