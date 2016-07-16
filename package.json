@@ -1,0 +1,25 @@
+{
+  "name": "acs",
+  "version": "1.0.0",
+  "description": "Abstract Controller Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lyon1-Asterix/Abstraction-ControllerServer.git"
+  },
+  "keywords": [
+    "leap",
+    "motion",
+    "xbox",
+    "pad"
+  ],
+  "author": "Ananasr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lyon1-Asterix/Abstraction-ControllerServer/issues"
+  },
+  "homepage": "https://github.com/Lyon1-Asterix/Abstraction-ControllerServer#readme"
+}
